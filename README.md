@@ -15,6 +15,14 @@
 In order to have quick access to DHAT Viewer from whenever I'am I decided to fork and host a GitHub Pages instance
 of Valgrind's DHAT Viewer compatible with [dhat-rs](https://github.com/nnethercote/dhat-rs) minimum required version.
 
+## Extended Features
+
+- In order to have the page load arbitrary params, support to load files from URL query param is provided.
+
+```
+https://estebanborai/dhat-profiler-viewer?report=<Encoded URI component to dhat-heap.json>
+```
+
 ## License
 
 Valgrind is licensed under the The GNU General Public License, version 2.

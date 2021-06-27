@@ -1437,6 +1437,40 @@ function changeSortMetric() {
   }
 }
 
+function loadReportFromURL() {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const params = Object.fromEntries(urlSearchParams.entries());
+  const reportURL = params['report'];
+  let now = performance.now();
+
+  if (!reportURL) {
+    return;
+  }
+
+  fetch(reportURL).then((report) => {
+      report.json().then((data) => {
+        gFilename = `Loaded from ${reportURL}`;
+        let tRead = performance.now() - now;
+
+        now = performance.now();
+        gData = data;
+        let tParse = performance.now() - now;
+  
+        now = performance.now();
+        buildTree();
+        let tBuild = performance.now() - now;
+  
+        displayTree(tRead, tParse, tBuild);
+      }).catch((err) => {
+        console.error(err);
+        clearMainDivWithText("Error loading from remote", err.toString());
+      });
+  }).catch((err) => {
+    console.error(err);
+    clearMainDivWithText("Error loading from remote", err.toString());
+  });
+}
+
 // Top-level setup when the page is first loaded.
 function onLoad() {
   // Check if tests should be run.
@@ -1517,5 +1551,7 @@ function onLoad() {
     script.src = "dh_test.js";
     document.body.appendChild(script);
   }
+
+  loadReportFromURL();
 }
 
